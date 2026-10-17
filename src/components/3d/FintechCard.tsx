@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox, Text } from '@react-three/drei'
 import * as THREE from 'three'
@@ -6,25 +6,117 @@ import * as THREE from 'three'
 export const FintechCard: React.FC = () => {
   const cardGroupRef = useRef<THREE.Group>(null)
   const chipRef = useRef<THREE.Group>(null)
+  const touchState = useRef({
+    x: 0,
+    y: 0,
+    active: false,
+    gyroX: 0,
+    gyroY: 0,
+    hasGyro: false,
+  })
 
-  // Track mouse pointer and apply smooth lerp parallax tilt
+  // Listen to mobile touch gestures and gyroscope orientation
+  useEffect(() => {
+    let startX = 0
+    let startY = 0
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches && e.touches.length > 0) {
+        startX = e.touches[0].clientX
+        startY = e.touches[0].clientY
+        touchState.current.active = true
+      }
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches.length > 0) {
+        const touch = e.touches[0]
+        // Normalized delta from center or viewport
+        const nx = (touch.clientX / window.innerWidth) * 2 - 1
+        const ny = -(touch.clientY / window.innerHeight) * 2 + 1
+        touchState.current.x = nx * 1.2
+        touchState.current.y = ny * 1.2
+        touchState.current.active = true
+      }
+    }
+
+    const handleTouchEnd = () => {
+      // Smoothly let autonomous float take over
+      touchState.current.active = false
+    }
+
+    // Mobile Gyroscope support for tilting physical phone
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma !== null && e.beta !== null) {
+        // gamma: left-to-right tilt [-90, 90]
+        // beta: front-to-back tilt [-180, 180]
+        const gx = THREE.MathUtils.clamp(e.gamma / 35, -1, 1)
+        const gy = THREE.MathUtils.clamp((e.beta - 40) / 35, -1, 1)
+        touchState.current.gyroX = gx
+        touchState.current.gyroY = gy
+        touchState.current.hasGyro = true
+      }
+    }
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true })
+
+    if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true })
+    }
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleTouchEnd)
+      window.removeEventListener('touchcancel', handleTouchEnd)
+      if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+        window.removeEventListener('deviceorientation', handleOrientation)
+      }
+    }
+  }, [])
+
+  // Track mouse pointer & touch coordinates with smooth lerp parallax tilt
   useFrame((state, delta) => {
     if (!cardGroupRef.current) return
 
-    // state.pointer coordinates range from -1 to 1
-    const targetX = -state.pointer.y * 0.35 + Math.sin(state.clock.elapsedTime * 0.7) * 0.04
-    const targetY = state.pointer.x * 0.45 + Math.cos(state.clock.elapsedTime * 0.5) * 0.05
-    const targetZ = Math.sin(state.clock.elapsedTime * 0.9) * 0.08
+    const t = state.clock.elapsedTime
+    const touch = touchState.current
 
-    // Smooth lerp interpolation for cinematic inertia
-    const lerpSpeed = 4.5 * delta
+    // Autonomous cinematic idle float (amplified on mobile so it's always alive)
+    const autoX = Math.sin(t * 0.9) * 0.16
+    const autoY = Math.cos(t * 0.7) * 0.22
+    const autoZ = Math.sin(t * 1.2) * 0.12
+
+    // Determine input source: Active touch > Gyroscope > Mouse Pointer > Idle Float
+    let inputX = state.pointer.x
+    let inputY = state.pointer.y
+
+    if (touch.active) {
+      inputX = touch.x
+      inputY = touch.y
+    } else if (touch.hasGyro) {
+      inputX = touch.gyroX * 0.8
+      inputY = -touch.gyroY * 0.8
+    }
+
+    // Target rotation: combines input tilt with organic floating wave
+    const targetX = -inputY * 0.42 + autoX
+    const targetY = inputX * 0.52 + autoY
+    const targetZ = autoZ
+
+    // Smooth lerp interpolation for cinematic physical weight
+    const lerpSpeed = Math.min(6 * delta, 0.2)
     cardGroupRef.current.rotation.x = THREE.MathUtils.lerp(cardGroupRef.current.rotation.x, targetX, lerpSpeed)
     cardGroupRef.current.rotation.y = THREE.MathUtils.lerp(cardGroupRef.current.rotation.y, targetY, lerpSpeed)
+    cardGroupRef.current.rotation.z = THREE.MathUtils.lerp(cardGroupRef.current.rotation.z, Math.sin(t * 0.6) * 0.03 - inputX * 0.05, lerpSpeed)
     cardGroupRef.current.position.y = THREE.MathUtils.lerp(cardGroupRef.current.position.y, targetZ, lerpSpeed)
 
-    // Subtle gentle shimmer on the EMV chip
+    // Subtle gentle shimmer on the golden EMV chip
     if (chipRef.current) {
-      chipRef.current.position.z = 0.033 + Math.sin(state.clock.elapsedTime * 2) * 0.001
+      chipRef.current.position.z = 0.033 + Math.sin(t * 2) * 0.001
     }
   })
 

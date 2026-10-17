@@ -1182,10 +1182,26 @@ const CrystalizedBall = ({
       const radius = Math.max(8, (clamp(s.size, 0.1, 1.5) * Math.min(width, height)) / 2);
 
       const strength = s.interactive && !reducedMotion ? clamp(s.hoverStrength, 0, 1) : 0;
-      const px = pointer.x - width / 2;
-      const py = height / 2 - pointer.y;
-      const reach = Math.hypot(px, py);
-      const target = pointer.inside ? strength : 0;
+      const autoT = now * 0.001;
+
+      let px, py, target, nearTarget, inBall, brushPower;
+
+      if (pointer.inside) {
+        px = pointer.x - width / 2;
+        py = height / 2 - pointer.y;
+        const reach = Math.hypot(px, py);
+        target = strength;
+        nearTarget = Math.exp(-Math.pow((reach - radius) / (radius * 0.45), 2));
+        inBall = Math.exp(-Math.max(0, Math.hypot(px / radius, py / radius) - 1) * 6);
+      } else {
+        // Autonomous continuous motion when not touched (vital for mobile devices & idle states)
+        px = Math.cos(autoT * 0.7) * (radius * 0.55);
+        py = Math.sin(autoT * 1.1) * (radius * 0.55);
+        target = 0.4 * (0.6 + 0.4 * Math.sin(autoT * 1.5));
+        nearTarget = 0.7 + 0.3 * Math.cos(autoT * 0.8);
+        inBall = 1.0;
+      }
+
       if (heat.power < 0.02) {
         heat.angle = Math.atan2(py, px);
         heat.velocity = 0;
@@ -1194,7 +1210,6 @@ const CrystalizedBall = ({
       heat.velocity += (120 * turn - 19 * heat.velocity) * dt;
       heat.angle = wrapAngle(heat.angle + heat.velocity * dt);
       heat.power += (target - heat.power) * (1 - Math.exp(-dt / (target > heat.power ? 0.3 : 0.55)));
-      const nearTarget = Math.exp(-Math.pow((reach - radius) / (radius * 0.45), 2));
       heat.near += (nearTarget - heat.near) * (1 - Math.exp(-dt / 0.15));
       surge *= Math.exp(-dt / 0.7);
 
@@ -1215,8 +1230,7 @@ const CrystalizedBall = ({
       brush.y = by;
       const brushSpeed = Math.hypot(brush.vx, brush.vy);
       const cap = brushSpeed > 4 ? 4 / brushSpeed : 1;
-      const inBall = Math.exp(-Math.max(0, Math.hypot(bx, by) - 1) * 6);
-      const brushPower = pointer.inside ? strength * inBall * presence : 0;
+      brushPower = (pointer.inside ? strength : 0.4) * inBall * presence;
       stirEnergy = stirEnergy * Math.exp(-dt / 1.2) + brushPower * Math.min(brushSpeed, 4) * dt;
 
       if (moving) {
@@ -1359,8 +1373,17 @@ const CrystalizedBall = ({
 
     const locate = e => {
       const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      let cx = e.clientX;
+      let cy = e.clientY;
+      if (cx === undefined && e.touches && e.touches.length > 0) {
+        cx = e.touches[0].clientX;
+        cy = e.touches[0].clientY;
+      } else if (cx === undefined && e.changedTouches && e.changedTouches.length > 0) {
+        cx = e.changedTouches[0].clientX;
+        cy = e.changedTouches[0].clientY;
+      }
+      const x = (cx !== undefined ? cx : 0) - rect.left;
+      const y = (cy !== undefined ? cy : 0) - rect.top;
       return { x, y, inside: x >= 0 && y >= 0 && x <= rect.width && y <= rect.height };
     };
 
@@ -1387,11 +1410,49 @@ const CrystalizedBall = ({
       const distance = Math.hypot(kx, ky);
       if (distance > 1.3) return;
       const strength = clamp(s.hoverStrength, 0, 1);
-      kick = { x: kx, y: ky, strength: strength * 1.2 };
+      kick = { x: kx, y: ky, strength: strength * 1.3 };
       surge = Math.max(surge, strength);
       const angle = Math.atan2(ky, kx);
       spawnArc(angle + (random() - 0.5) * 0.5, 1.3);
       spawnArc(angle + Math.PI + (random() - 0.5) * 1.2, 1.1);
+      start();
+    };
+
+    const onTouchStart = e => {
+      const s = settingsRef.current;
+      const spot = locate(e);
+      if (!s || !s.interactive || reducedMotion || !spot.inside) return;
+      if (!pointer.inside) pointer.fresh = true;
+      pointer.x = spot.x;
+      pointer.y = spot.y;
+      pointer.inside = true;
+      const radius = Math.max(8, (clamp(s.size, 0.1, 1.5) * Math.min(width, height)) / 2);
+      const kx = (spot.x - width / 2) / radius;
+      const ky = (height / 2 - spot.y) / radius;
+      const distance = Math.hypot(kx, ky);
+      if (distance > 1.3) return;
+      const strength = clamp(s.hoverStrength, 0, 1);
+      kick = { x: kx, y: ky, strength: strength * 1.4 };
+      surge = Math.max(surge, strength);
+      const angle = Math.atan2(ky, kx);
+      spawnArc(angle + (random() - 0.5) * 0.6, 1.4);
+      spawnArc(angle + Math.PI + (random() - 0.5) * 1.2, 1.2);
+      start();
+    };
+
+    const onTouchMove = e => {
+      const spot = locate(e);
+      if (spot.inside) {
+        if (!pointer.inside) pointer.fresh = true;
+        pointer.x = spot.x;
+        pointer.y = spot.y;
+        pointer.inside = true;
+        start();
+      }
+    };
+
+    const onTouchEnd = () => {
+      pointer.inside = false;
       start();
     };
 
@@ -1419,6 +1480,11 @@ const CrystalizedBall = ({
     window.addEventListener('blur', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
 
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('touchend', onTouchEnd, { passive: true });
+    container.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
@@ -1442,6 +1508,10 @@ const CrystalizedBall = ({
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('blur', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchcancel', onTouchEnd);
       wakeRef.current = null;
       disposeDust();
       disposeTarget(sceneTarget);

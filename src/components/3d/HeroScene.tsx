@@ -90,7 +90,7 @@ const FloatingAccents: React.FC = () => {
 
 export const HeroScene: React.FC = () => {
   return (
-    <div className="relative w-full h-[480px] sm:h-[560px] lg:h-[640px] xl:h-[700px] flex items-center justify-center select-none cursor-grab active:cursor-grabbing">
+    <div className="relative w-full h-[480px] sm:h-[560px] lg:h-[640px] xl:h-[700px] flex items-center justify-center select-none cursor-grab active:cursor-grabbing touch-pan-y">
       <Canvas
         camera={{ position: [0, 0, 5.4], fov: 42 }}
         dpr={[1, 2]}
@@ -99,7 +99,7 @@ export const HeroScene: React.FC = () => {
           alpha: true,
           powerPreference: 'high-performance',
         }}
-        className="w-full h-full"
+        className="w-full h-full touch-pan-y"
       >
         {/* Studio Lighting Setup as requested */}
         {/* Ambient Light: intensity 0.6 */}
