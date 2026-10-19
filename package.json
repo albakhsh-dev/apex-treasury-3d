@@ -1,20 +1,23 @@
 {
-  "name": "apex-fintech-3d",
+  "name": "luxury-dealership-3d",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.27",
     "lucide-react": "^1.16.0",
+    "next": "^16.4.2",
     "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -22,6 +25,7 @@
     "three": "^0.174.0"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/three": "^0.174.0",

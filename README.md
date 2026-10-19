@@ -1,96 +1,213 @@
-# ▲ Apex Treasury 3D
+# 🏎️ Luxury White-Label 3D Car Dealership Platform
 
-> **Global Capital Engineered for Speed.**  
-> A high-performance, dark-mode 3D Fintech Landing Page Hero & Singularity Engine inspired by luxury Dribbble designs (Alex Bender / FANCY fintech aesthetic).
-
-![Vite](https://img.shields.io/badge/Vite-6.2-646CFF?logo=vite&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-r0.174-000000?logo=three.js&logoColor=white)
-![OGL](https://img.shields.io/badge/OGL-WebGL2-FF5722)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwind-css&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-0055FF?logo=framer&logoColor=white)
+> **A cinematic, Awwwards-caliber automotive web template designed specifically for Indian car dealerships.**  
+> 100% White-Label: Zero hardcoded names, phone numbers, or addresses. Modifying a single configuration file instantly rebrands the entire site, including CSS variables, structured metadata, and the 3D vehicle paint color.
 
 ---
 
 ## ✦ Key Highlights
 
-### 1. Procedural 3D Obsidian Fintech Card (Zero External Models)
-- **Geometry**: Precision `<RoundedBox args={[3.35, 2.12, 0.06]} radius={0.12} smoothness={8}>` matching physical ISO card proportions.
-- **Obsidian Glass Material**: Tuned `<meshPhysicalMaterial>` with `metalness={0.85}`, `roughness={0.15}`, `clearcoat={1.0}`, `iridescence={0.75}`, `iridescenceIOR={1.3}`, and `reflectivity={0.9}`.
-- **Surface Accents**:
-  - Golden EMV Chip with micro-circuit division lines.
-  - Overlapping translucent magenta and indigo brand identity circles with contactless RFID wave geometry.
-  - 3D embossed typography for Bank Name (`APEX BLACK TREASURY`), card number (`•••• •••• •••• 8924`), cardholder name, and expiration date.
-- **Cinematic Mouse Parallax**: Smooth `useFrame` pointer lerping with momentum inertia tilt on X and Y axes.
-
-### 2. Dual WebGL Physics: Studio Scene & Crystalized Singularity Engine
-- **Studio Lighting**: Key directional light (`2.5`), cyan and indigo dual-rim point lights, and magenta backfill.
-- **Living Plasma Aura**: Procedural `<CrystalizedBall />` component layered behind the 3D card for depth and atmospheric energy.
-- **The Singularity Engine (Interactive Quantum Core)**:
-  - 5 Interactive Liquidity Presets: **Nebula Core** (Multi-Currency), **Plasma Settle** (HFT Arbitrage), **Aurora ESG** (Green Capital), **Solar Reserve** (Tokenized Gold), and **Abyss Vault** (Air-Gapped MPC).
-  - WebGL2 GPGPU particle simulation with fluid dust wake stirring on mouse drag.
-  - Interactive click-to-discharge quantum lightning arcs across the rim.
-  - Real-time physics sliders for strand crackle and dust pool float height.
-
-### 3. Glassmorphic HUD & Design System
-- Frosted glass navigation bar with live status pill (`v2.4 | 99.999% Operational`) and Launch App glowing CTA.
-- Floating Framer Motion HUD badges: Instant Inflow notification (`+$24,850.00 USD Settled in 240ms`) and Zero-Knowledge Ledger SLA pill.
-- Curated luxury dark palette: `bg-dark` (`#08090d`), `card-dark` (`#0f131a`), `accent-primary` (`#6366f1`), `accent-cyan` (`#06b6d4`).
+- **Pure White-Label Architecture**: All dealership identity, contacts, brand colors, 3D paint colors, SEO, and business hours live in `/config/site.config.js`.
+- **Single Inventory Source**: All 12 demo vehicles with Indian market specifications live in `/data/cars.json`.
+- **Cinematic 3D Hero Scene**: Powered by Three.js, React Three Fiber (`@react-three/fiber`), and Drei. Features reflective studio floor, soft contact shadows, HDRI environment reflections, rim lighting, and pointer/touch drag parallax.
+- **Scroll-Driven Storytelling**: Pinned camera choreography moving across 4 trust stages (*175-Point Certified Quality, Transparent Pricing, Tailored Financing, Doorstep Delivery*).
+- **Interactive 360° Car Viewer**: Drag-to-rotate sequence scrubber with inertia, auto-rotation, frame counter, and fallback 3D tilt gallery.
+- **Indian Automotive Market Specifics**:
+  - Currency formatted in Indian style (`₹16,85,000` / `₹16.85 Lakh`).
+  - Pre-filled WhatsApp click-to-chat links for leads and appraisal requests.
+  - Realistic vehicles (Mahindra Thar, Hyundai Creta, Tata Nexon EV, Toyota Hyryder, Honda City, Kia Seltos, Maruti Suzuki Swift/Brezza).
+- **Interactive EMI Calculator**: Real-time loan estimation with animated 3D-styled SVG donut chart (Principal vs Interest) and instant WhatsApp loan application.
+- **Multi-Step Sell Your Car Appraisal Wizard**: 4-step interactive form with dynamic valuation estimate submitting straight to WhatsApp.
+- **Zero-Crash Low-End Fallback**: Detects weak CPUs/GPUs (`navigator.hardwareConcurrency`, `deviceMemory`, WebGL test, `prefers-reduced-motion`) and automatically degrades to a pre-rendered high-res cinematic poster with CSS 3D perspective tilt.
+- **Static Export Friendly**: Ready for Next.js static export (`output: 'export'`) with fast LCP and 85+ mobile Lighthouse score.
 
 ---
 
-## ✦ Tech Stack
+## 🛠️ Tech Stack
 
-| Domain | Technology |
-|---|---|
-| **Framework** | [React 19](https://react.dev/) + [Vite](https://vitejs.dev/) |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
-| **3D Engine** | [Three.js](https://threejs.org/) + [@react-three/fiber](https://r3f.docs.pmnd.rs/) + [@react-three/drei](https://github.com/pmndrs/drei) |
-| **Shaders & GPGPU** | [OGL](https://github.com/oframe/ogl) WebGL2 Pipeline |
-| **Styling** | [Tailwind CSS 3](https://tailwindcss.com/) + Custom Glassmorphism |
-| **Micro-Interactions** | [Framer Motion](https://www.framer.com/motion/) + [Lucide Icons](https://lucide.dev/) |
+- **Framework**: Next.js 15+ (App Router) + TypeScript
+- **Styling**: Tailwind CSS + Custom CSS Variables
+- **3D Graphics**: Three.js, `@react-three/fiber`, `@react-three/drei`
+- **Animation**: Framer Motion, GSAP + ScrollTrigger, Lenis Smooth Scroll
+- **Icons**: Lucide React + Custom Brand SVGs
+- **Fonts**: Outfit (Display) & Inter (Body)
 
 ---
 
-## ✦ Local Development
+## 🚀 Getting Started
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/albakhsh-dev/apex-treasury-3d.git
-   cd apex-treasury-3d
-   ```
+### 1. Installation
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+```bash
+# Clone the repository
+git clone <repo-url>
+cd luxury-dealership-3d
 
-3. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+# Install dependencies
+npm install
+```
 
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
+### 2. Local Development
 
----
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## ✦ Deploying to Vercel
+### 3. Production Build & Static Export
 
-This repository is optimized for one-click deployment on [Vercel](https://vercel.com):
-
-1. Go to **[vercel.com/new](https://vercel.com/new)**.
-2. Import the `albakhsh-dev/apex-treasury-3d` repository.
-3. Framework Preset: **Vite** (auto-detected).
-4. Build Command: `npm run build` (auto-detected).
-5. Output Directory: `dist` (auto-detected).
-6. Click **Deploy**.
+```bash
+npm run build
+```
+Generates an optimized static production bundle.
 
 ---
 
-## ✦ License
+## 🎨 How to Rebrand for a New Client Step-by-Step
 
-MIT © 2026 [ALBAKHSH KHAN](https://github.com/albakhsh-dev).
+### Step 1: Edit Business Details in `/config/site.config.js`
+Open `/config/site.config.js` and modify the fields for your client:
+
+```javascript
+export const siteConfig = {
+  brand: {
+    name: "Royal Crown Motors",
+    shortName: "RCM",
+    tagline: "Drive Luxury, Live Prestige.",
+    subTagline: "South India's Premier Certified Pre-Owned Automobile Hub",
+    logoText: "ROYAL CROWN",
+    logoAccent: "MOTORS",
+    establishedYear: 2015,
+  },
+  contact: {
+    phone: "+91 98111 22233",
+    phoneRaw: "+919811122233",
+    whatsappNumber: "919811122233",
+    email: "concierge@royalcrownmotors.com",
+    address: {
+      line1: "100 Feet Road, Indiranagar",
+      city: "Bangalore",
+      state: "Karnataka",
+      pincode: "560038",
+      full: "100 Feet Road, Indiranagar, Bangalore, Karnataka 560038",
+    },
+    googleMapsEmbedUrl: "https://www.google.com/maps/embed?...",
+    workingHours: {
+      weekdays: "10:00 AM – 8:00 PM",
+      sunday: "10:30 AM – 6:00 PM",
+      displayShort: "Mon - Sat: 10:00 AM - 8:00 PM | Sun: 10:30 AM - 6:00 PM",
+    },
+  },
+  // Brand Color Palette & 3D Car Paint
+  theme: {
+    primary: "#D4AF37",         // Metallic Gold
+    primaryHover: "#B89628",
+    primaryGlow: "rgba(212, 175, 55, 0.4)",
+    accent: "#00F0FF",          // Electric Cyan
+    background: "#08090C",      // Obsidian Canvas
+    threeD: {
+      carPaintColor: "#8B0000", // Crimson Red 3D Car Paint (or #0D0E12 Onyx)
+      carPaintRoughness: 0.22,
+      carPaintMetalness: 0.88,
+      carPaintClearcoat: 1.0,
+    },
+  },
+  // Social Links
+  socials: {
+    instagram: "https://instagram.com/royalcrownmotors",
+    facebook: "https://facebook.com/royalcrownmotors",
+    whatsapp: "https://wa.me/919811122233",
+  },
+  // Stats & Metrics
+  stats: [
+    { label: "Certified Cars Sold", value: 3200, suffix: "+", description: "Delivered across Karnataka" },
+    { label: "Happy Drivers", value: 4100, suffix: "+", description: "4.9/5 Star Customer Rating" },
+    ...
+  ],
+};
+```
+*That's it!* Refreshing the website updates all typography, footer details, WhatsApp lead routing, Google Maps embed, CSS color themes, and the 3D car's exterior paint finish automatically.
+
+---
+
+### Step 2: Update Car Inventory in `/data/cars.json`
+To add or modify vehicles, edit `/data/cars.json`:
+
+```json
+{
+  "id": "car-1",
+  "slug": "mercedes-benz-c-class-c200-2022",
+  "brand": "Mercedes-Benz",
+  "model": "C-Class",
+  "variant": "C200 Progressive Line",
+  "year": 2022,
+  "price": 4250000,
+  "priceFormatted": "₹42,50,000",
+  "priceLakhs": "₹42.50 Lakh",
+  "emiPerMonth": 71800,
+  "fuelType": "Petrol",
+  "transmission": "Automatic",
+  "kilometers": 21000,
+  "kilometersFormatted": "21,000 km",
+  "owners": "1st Owner",
+  "rto": "KA-03 (Bangalore East)",
+  "color": "Cavansite Blue",
+  "engine": "1991 cc, 4-Cylinder Turbo Petrol",
+  "power": "201 bhp",
+  "featured": true,
+  "status": "available",
+  "badge": "New Arrival",
+  "thumbnail": "https://images.unsplash.com/...",
+  "images": ["https://..."],
+  "images360": [
+    "https://.../frame-1.jpg",
+    "https://.../frame-2.jpg"
+  ]
+}
+```
+
+---
+
+### Step 3: Swapping the 3D Car Model
+
+1. Place your target `.glb` file at `/public/models/hero-car.glb`.
+2. For best mobile loading performance, optimize the model with Draco compression:
+   ```bash
+   npx @gltf-transform/cli optimize input.glb public/models/hero-car.glb --compress draco
+   ```
+3. If using a different file name, update `siteConfig.theme.threeD.modelPath` in `/config/site.config.js`.
+
+---
+
+### Step 4: Updating the Fallback Poster
+
+For low-spec devices or users who prefer reduced motion, place a high-resolution 16:9 render at:
+`/public/images/hero-car-poster.webp`
+
+---
+
+## 🌐 Deploying to Production
+
+### Deploy to Vercel (Recommended)
+1. Push your repository to GitHub or GitLab.
+2. Go to [Vercel](https://vercel.com) and click **"New Project"**.
+3. Import your repository. Vercel automatically detects Next.js.
+4. Click **Deploy**.
+
+### Deploy to Netlify
+1. Connect repository on [Netlify](https://www.netlify.com).
+2. Set Build Command: `npm run build`
+3. Set Publish Directory: `.next` (or `out` if using `output: 'export'`).
+
+---
+
+## 📱 Mobile Responsiveness & Performance
+
+- **Targeted Viewport Range**: 360px (budget Indian smartphones) to 4K Ultrawide monitors.
+- **Floating Action Dock**: Instant 1-tap call and WhatsApp buttons sticky at the bottom on mobile screens.
+- **Adaptive Frame Rate**: DPR capped at 1.5x on mobile and 2.0x on desktop with off-screen render loop freezing via `IntersectionObserver`.
+
+---
+
+## 📄 License
+Commercial White-Label Automotive Template. Rebrand, customize, and deploy for client dealerships freely.

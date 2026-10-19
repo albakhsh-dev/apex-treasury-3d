@@ -1,127 +1,255 @@
-import React, { useState } from 'react'
-import { ArrowUpRight, Menu, X, ChevronRight, Shield } from 'lucide-react'
+"use client";
 
-export const Navbar: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { siteConfig } from "@/config/site.config";
+import {
+  Car,
+  Phone,
+  MessageCircle,
+  Menu,
+  X,
+  ShieldCheck,
+  ChevronRight,
+  Clock,
+  Sparkles,
+} from "lucide-react";
+import { createWhatsAppLeadLink } from "@/lib/formatters";
+
+export function Navbar() {
+  const [isVisible, setIsVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Check if scrolled past threshold for glass effect
+      setIsScrolled(currentScrollY > 40);
+
+      // Scroll direction detection
+      if (currentScrollY > 120) {
+        if (currentScrollY > lastScrollY && !mobileMenuOpen) {
+          // Scrolling down
+          setIsVisible(false);
+        } else {
+          // Scrolling up
+          setIsVisible(true);
+        }
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, mobileMenuOpen]);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   const navLinks = [
-    { name: 'Infrastructure', href: '#infrastructure' },
-    { name: 'Treasury', href: '#treasury' },
-    { name: 'Quantum Core', href: '#quantum-core' },
-    { name: 'Developers', href: '#developers' },
-    { name: 'Security', href: '#security' },
-  ]
+    { label: "Inventory", href: "/inventory", badge: "12 Cars" },
+    { label: "Sell Your Car", href: "/sell", badge: "Instant Quote" },
+    { label: "EMI Calculator", href: "/finance" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
+  ];
+
+  const whatsappGeneralUrl = createWhatsAppLeadLink(
+    siteConfig.contact.whatsappNumber,
+    `Hi ${siteConfig.brand.name}, I would like to enquire about your available verified cars and schedule a showroom visit.`
+  );
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#08090d]/80 border-b border-white/[0.08] transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo & Status Pill */}
-        <div className="flex items-center gap-6">
-          <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-indigo-600 to-cyan-400 p-[1px] shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-all">
-              <div className="w-full h-full bg-[#08090d] rounded-[7px] flex items-center justify-center">
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-400 to-cyan-400 font-bold text-base leading-none">
-                  ▲
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        {/* Top Info Bar (Desktop) */}
+        <div className="hidden lg:block bg-black/60 border-b border-white/5 py-1.5 px-6 text-xs text-brand-muted">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <span className="flex items-center text-slate-300">
+                <Clock className="w-3.5 h-3.5 mr-1.5 text-brand-accent" />
+                {siteConfig.contact.workingHours.displayShort}
+              </span>
+              <span className="text-white/20">|</span>
+              <span className="text-slate-400">
+                {siteConfig.brand.subTagline}
+              </span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <a
+                href={`tel:${siteConfig.contact.phoneRaw}`}
+                className="hover:text-brand-accent transition-colors flex items-center text-slate-300"
+              >
+                <Phone className="w-3 h-3 mr-1 text-brand-primary" />
+                {siteConfig.contact.phone}
+              </a>
+              <span className="text-white/20">|</span>
+              <a
+                href={whatsappGeneralUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center font-medium"
+              >
+                <MessageCircle className="w-3.5 h-3.5 mr-1" />
+                WhatsApp Desk
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Glass Navbar */}
+        <nav
+          className={`transition-all duration-300 ${
+            isScrolled
+              ? "bg-[#08090C]/85 backdrop-blur-xl border-b border-white/10 shadow-2xl py-3.5"
+              : "bg-transparent py-5"
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+            {/* Brand Logo */}
+            <Link
+              href="/"
+              className="flex items-center space-x-3 group cursor-pointer focus:outline-none"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary/20 via-brand-surface to-brand-primary/10 border border-brand-primary/40 flex items-center justify-center shadow-lg group-hover:border-brand-primary transition-all duration-300">
+                <ShieldCheck className="w-5 h-5 text-brand-primary group-hover:scale-110 transition-transform duration-300" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base sm:text-lg font-black tracking-wider uppercase text-white font-display flex items-center">
+                  {siteConfig.brand.logoText}
+                  <span className="ml-1 text-[10px] tracking-widest px-1.5 py-0.5 rounded bg-brand-primary/20 text-brand-primary border border-brand-primary/30">
+                    {siteConfig.brand.logoAccent}
+                  </span>
+                </span>
+                <span className="text-[10px] tracking-widest text-slate-400 uppercase font-medium">
+                  {siteConfig.brand.tagline}
                 </span>
               </div>
+            </Link>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center ${
+                      isActive
+                        ? "text-white bg-white/10 shadow-sm"
+                        : "text-slate-300 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {link.label}
+                    {link.badge && (
+                      <span className="ml-1.5 text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full bg-brand-primary/20 text-brand-primary border border-brand-primary/30">
+                        {link.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
-            <span className="font-bold text-lg tracking-tight text-white group-hover:text-indigo-200 transition-colors">
-              Apex<span className="text-indigo-400">Pay</span>
-            </span>
-          </a>
 
-          {/* Institutional Status Pill */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-[11px] text-zinc-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-mono text-zinc-400">v2.4</span>
-            <span className="text-zinc-500">|</span>
-            <span className="text-emerald-400 font-medium">99.999% Operational</span>
+            {/* Desktop Action CTAs */}
+            <div className="hidden md:flex items-center space-x-3">
+              <a
+                href={whatsappGeneralUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white transition-all duration-300 rounded-lg overflow-hidden group border border-brand-primary/40 bg-gradient-to-r from-brand-primary/80 to-brand-primary hover:from-brand-primary hover:to-brand-primary-hover shadow-luxury-glow hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <MessageCircle className="w-3.5 h-3.5 mr-1.5 text-white animate-pulse" />
+                <span>Book Test Drive</span>
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center space-x-2">
+              <a
+                href={whatsappGeneralUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="w-5 h-5" />
+              </a>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg bg-white/5 text-slate-200 border border-white/10 hover:bg-white/10"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="px-3.5 py-1.5 text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-white/[0.05] transition-all"
-            >
-              {link.name}
-            </a>
-          ))}
         </nav>
 
-        {/* Right Action Buttons */}
-        <div className="hidden sm:flex items-center gap-4">
-          <a
-            href="#contact"
-            className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-          >
-            Institutional Portal
-          </a>
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-[#08090C]/95 backdrop-blur-2xl border-b border-white/10 px-6 py-6 space-y-4 shadow-2xl animate-in slide-in-from-top-4 duration-200">
+            <div className="space-y-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium ${
+                      isActive
+                        ? "bg-brand-primary/20 text-brand-primary border border-brand-primary/30"
+                        : "text-slate-200 hover:bg-white/5"
+                    }`}
+                  >
+                    <span>{link.label}</span>
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  </Link>
+                );
+              })}
+            </div>
 
-          <a
-            href="#app"
-            className="relative group overflow-hidden rounded-full p-[1px] font-medium text-sm text-white"
-          >
-            <span className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 rounded-full group-hover:opacity-100 opacity-80 blur-[2px] transition-opacity" />
-            <span className="relative flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0b0f19] transition-colors group-hover:bg-[#131926]">
-              <span>Launch App</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </span>
-          </a>
-        </div>
-
-        {/* Mobile Hamburger Button */}
-        <div className="flex md:hidden items-center gap-2">
-          <a
-            href="#app"
-            className="px-3.5 py-1.5 text-xs font-semibold rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
-          >
-            Launch
-          </a>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-white/[0.05] border border-white/10 text-zinc-300 hover:text-white"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/10 bg-[#08090d]/95 backdrop-blur-2xl px-6 py-6 space-y-4">
-          <div className="flex flex-col space-y-2">
-            {navLinks.map((link) => (
+            <div className="pt-4 border-t border-white/10 space-y-3">
               <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 text-base font-medium text-zinc-200 hover:text-white rounded-lg hover:bg-white/[0.06] transition-colors flex items-center justify-between"
+                href={`tel:${siteConfig.contact.phoneRaw}`}
+                className="flex items-center justify-center w-full py-3 px-4 rounded-xl bg-white/5 text-white border border-white/10 font-semibold text-sm"
               >
-                <span>{link.name}</span>
-                <ChevronRight className="w-4 h-4 text-zinc-400" />
+                <Phone className="w-4 h-4 mr-2 text-brand-primary" />
+                Call Showroom: {siteConfig.contact.phone}
               </a>
-            ))}
-          </div>
-
-          <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-            <a
-              href="#app"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-center font-semibold text-white shadow-lg shadow-indigo-500/20"
-            >
-              Launch Institutional App
-            </a>
-            <div className="flex items-center justify-center gap-2 text-xs text-zinc-400 pt-2">
-              <Shield className="w-3.5 h-3.5 text-cyan-400" /> SOC2 Type II Certified
+              <a
+                href={whatsappGeneralUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-600/30"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Chat on WhatsApp Desk
+              </a>
             </div>
           </div>
-        </div>
-      )}
-    </header>
-  )
+        )}
+      </header>
+    </>
+  );
 }

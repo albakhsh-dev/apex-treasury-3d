@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-primary: #E11D48;
+    --brand-primary-hover: #BE123C;
+    --brand-primary-glow: rgba(225, 29, 72, 0.4);
+    --brand-secondary: #0F172A;
+    --brand-accent: #00F0FF;
+    --brand-accent-glow: rgba(0, 240, 255, 0.35);
+    --brand-bg: #08090C;
+    --brand-surface: #0E1017;
+    --brand-glass: rgba(14, 16, 23, 0.75);
+    --brand-border: rgba(255, 255, 255, 0.08);
+    --brand-border-hover: rgba(225, 29, 72, 0.4);
+    --brand-text: #F8FAFC;
+    --brand-muted: #94A3B8;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #08090C;
+    color: #F8FAFC;
+  }
+
+  body {
+    background-color: #08090C;
+    color: #F8FAFC;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Subtle luxury automotive scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #08090C;
+}
+::-webkit-scrollbar-thumb {
+  background: #1A1D26;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E11D48;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(14, 16, 23, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
