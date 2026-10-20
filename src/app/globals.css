@@ -20,7 +20,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     background-color: #08090C;
     color: #F8FAFC;
   }

@@ -56,6 +56,7 @@ interface CarCardProps {
 
 export function CarCard({ car }: CarCardProps) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [imgSrc, setImgSrc] = useState(car.thumbnail || "/images/placeholder-car.svg");
   const isSold = car.status === "sold";
   const animFrameRef = useState<number | null>(null);
 
@@ -94,9 +95,10 @@ export function CarCard({ car }: CarCardProps) {
       {/* Top Image Container */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
         <Image
-          src={car.thumbnail}
+          src={imgSrc}
           alt={`${car.year} ${car.brand} ${car.model}`}
           fill
+          onError={() => setImgSrc("/images/placeholder-car.svg")}
           className={`object-cover object-center group-hover:scale-105 transition-transform duration-500 ${
             isSold ? "grayscale contrast-125 opacity-60" : ""
           }`}
@@ -215,7 +217,7 @@ export function CarCard({ car }: CarCardProps) {
               href={`/cars/${car.id}`}
               className="px-3.5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white text-xs font-semibold tracking-wider uppercase flex items-center space-x-1 transition-all shadow-md group-hover:shadow-luxury-glow"
             >
-              <span>{isSold ? "View Details" : "Inspect"}</span>
+              <span>View Details</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>

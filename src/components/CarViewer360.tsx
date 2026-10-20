@@ -28,6 +28,20 @@ export function CarViewer360({ images360, images, title }: CarViewer360Props) {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  const getImageSrc = (src: string | undefined) => {
+    if (!src || failedImages[src]) {
+      return "/images/placeholder-car.svg";
+    }
+    return src;
+  };
+
+  const handleImageError = (src: string | undefined) => {
+    if (src) {
+      setFailedImages((prev) => ({ ...prev, [src]: true }));
+    }
+  };
 
   const totalFrames = has360 ? images360!.length : 0;
 
@@ -90,11 +104,12 @@ export function CarViewer360({ images360, images, title }: CarViewer360Props) {
           {/* Active 360 Frame */}
           <div className="relative w-full h-full">
             <Image
-              src={images360![currentFrame]}
+              src={getImageSrc(images360![currentFrame])}
               alt={`${title} - 360 Frame ${currentFrame + 1}`}
               fill
               priority
               className="object-contain"
+              onError={() => handleImageError(images360![currentFrame])}
               sizes="(max-width: 1200px) 100vw, 1000px"
             />
           </div>
@@ -175,11 +190,12 @@ export function CarViewer360({ images360, images, title }: CarViewer360Props) {
             }}
           >
             <Image
-              src={images[activeGalleryIndex] || images[0]}
+              src={getImageSrc(images[activeGalleryIndex] || images[0])}
               alt={title}
               fill
               priority
               className="object-cover"
+              onError={() => handleImageError(images[activeGalleryIndex] || images[0])}
               sizes="(max-width: 1200px) 100vw, 1000px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -202,7 +218,13 @@ export function CarViewer360({ images360, images, title }: CarViewer360Props) {
                     : "border-transparent opacity-60 hover:opacity-100"
                 }`}
               >
-                <Image src={img} alt={`Thumb ${idx + 1}`} fill className="object-cover" />
+                <Image
+                  src={getImageSrc(img)}
+                  alt={`Thumb ${idx + 1}`}
+                  fill
+                  className="object-cover"
+                  onError={() => handleImageError(img)}
+                />
               </button>
             ))}
           </div>
@@ -217,10 +239,11 @@ export function CarViewer360({ images360, images, title }: CarViewer360Props) {
         >
           <div className="relative max-w-5xl w-full aspect-[16/10]">
             <Image
-              src={images[activeGalleryIndex] || images[0]}
+              src={getImageSrc(images[activeGalleryIndex] || images[0])}
               alt={title}
               fill
               className="object-contain"
+              onError={() => handleImageError(images[activeGalleryIndex] || images[0])}
             />
           </div>
           <button

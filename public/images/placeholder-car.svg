@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0C10" />
+      <stop offset="50%" stop-color="#12151D" />
+      <stop offset="100%" stop-color="#07080B" />
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.18" />
+      <stop offset="60%" stop-color="#D4AF37" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#806216" stop-opacity="0.2" />
+      <stop offset="25%" stop-color="#D4AF37" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#FFF2BD" stop-opacity="1" />
+      <stop offset="75%" stop-color="#D4AF37" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#806216" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="silverLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="50%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="wheelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2D3748" />
+      <stop offset="100%" stop-color="#1A202C" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="750" fill="url(#bgGrad)" />
+
+  <!-- Studio Floor Grid Line & Spotlight -->
+  <ellipse cx="600" cy="520" rx="480" ry="140" fill="url(#glowGrad)" />
+  <path d="M 120 540 L 1080 540" stroke="#334155" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="6 6" />
+
+  <!-- Car Silhouette Paths -->
+  <!-- Main Body Roofline & Beltline -->
+  <path d="M 220 500
+           C 250 490, 290 460, 360 450
+           C 430 440, 480 340, 560 320
+           C 660 295, 760 300, 830 350
+           C 890 390, 940 445, 990 470
+           C 1020 485, 1030 500, 1030 515
+           L 960 515
+           C 955 465, 875 465, 870 515
+           L 410 515
+           C 405 465, 325 465, 320 515
+           Z"
+        fill="#141824" stroke="url(#silverLine)" stroke-width="2" />
+
+  <!-- Coupe Roofline Highlight (Gold) -->
+  <path d="M 400 440
+           C 460 390, 510 330, 580 322
+           C 670 312, 750 320, 815 360
+           C 870 395, 905 440, 940 470"
+        fill="none" stroke="url(#goldLine)" stroke-width="3.5" stroke-linecap="round" />
+
+  <!-- Side Window Cut & C-Pillar -->
+  <path d="M 490 425
+           C 530 365, 570 338, 620 335
+           L 750 335
+           C 790 350, 825 385, 845 425
+           Z"
+        fill="#0B0D13" stroke="#475569" stroke-width="1.5" />
+  <line x1="640" y1="335" x2="635" y2="425" stroke="#334155" stroke-width="2" />
+
+  <!-- Front Aerodynamic Splitter & Light Streak -->
+  <path d="M 220 500 C 200 505, 190 515, 205 522 L 270 522" stroke="url(#goldLine)" stroke-width="2" fill="none" />
+  <!-- Headlight Beam Flare -->
+  <polygon points="210,495 140,510 140,520 220,502" fill="url(#goldLine)" opacity="0.3" />
+
+  <!-- Rear Spoiler & Taillight Streak -->
+  <path d="M 1000 480 C 1030 485, 1045 495, 1040 508 L 970 512" stroke="#EF4444" stroke-width="3" fill="none" opacity="0.8" />
+
+  <!-- Left / Front Wheel Assembly -->
+  <g transform="translate(365, 515)">
+    <circle cx="0" cy="0" r="58" fill="#0A0C10" stroke="#334155" stroke-width="5" />
+    <circle cx="0" cy="0" r="42" fill="url(#wheelGrad)" stroke="url(#goldLine)" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="16" fill="#0A0C10" stroke="#D4AF37" stroke-width="2" />
+    <!-- 5 Spokes -->
+    <line x1="0" y1="-40" x2="0" y2="40" stroke="#64748B" stroke-width="2.5" />
+    <line x1="-38" y1="-12" x2="38" y2="12" stroke="#64748B" stroke-width="2.5" />
+    <line x1="-24" y1="32" x2="24" y2="-32" stroke="#64748B" stroke-width="2.5" />
+  </g>
+
+  <!-- Right / Rear Wheel Assembly -->
+  <g transform="translate(915, 515)">
+    <circle cx="0" cy="0" r="58" fill="#0A0C10" stroke="#334155" stroke-width="5" />
+    <circle cx="0" cy="0" r="42" fill="url(#wheelGrad)" stroke="url(#goldLine)" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="16" fill="#0A0C10" stroke="#D4AF37" stroke-width="2" />
+    <!-- 5 Spokes -->
+    <line x1="0" y1="-40" x2="0" y2="40" stroke="#64748B" stroke-width="2.5" />
+    <line x1="-38" y1="-12" x2="38" y2="12" stroke="#64748B" stroke-width="2.5" />
+    <line x1="-24" y1="32" x2="24" y2="-32" stroke="#64748B" stroke-width="2.5" />
+  </g>
+
+  <!-- Ground Shadow under Tires -->
+  <ellipse cx="365" cy="572" rx="65" ry="8" fill="#000000" opacity="0.7" />
+  <ellipse cx="915" cy="572" rx="65" ry="8" fill="#000000" opacity="0.7" />
+  <rect x="365" y="565" width="550" height="10" fill="#000000" opacity="0.4" />
+
+  <!-- Center Luxury Badge & Watermark -->
+  <g transform="translate(600, 200)">
+    <!-- Shield / Diamond Icon -->
+    <path d="M 0 -36 L 28 -12 L 28 20 L 0 36 L -28 20 L -28 -12 Z" fill="#0E121A" stroke="url(#goldLine)" stroke-width="2" />
+    <circle cx="0" cy="0" r="10" fill="none" stroke="#D4AF37" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="4" fill="#D4AF37" />
+
+    <!-- Label -->
+    <text x="0" y="65" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" letter-spacing="4" fill="#E2E8F0" text-anchor="middle">
+      LUXURY CERTIFIED VEHICLE
+    </text>
+    <text x="0" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="#64748B" text-anchor="middle">
+      STUDIO GALLERY PHOTO PENDING
+    </text>
+  </g>
+</svg>
