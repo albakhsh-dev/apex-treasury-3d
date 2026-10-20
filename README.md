@@ -186,20 +186,6 @@ For low-spec devices or users who prefer reduced motion, place a high-resolution
 
 ---
 
-## 🌐 Deploying to Production
-
-### Deploy to Vercel (Recommended)
-1. Push your repository to GitHub or GitLab.
-2. Go to [Vercel](https://vercel.com) and click **"New Project"**.
-3. Import your repository. Vercel automatically detects Next.js.
-4. Click **Deploy**.
-
-### Deploy to Netlify
-1. Connect repository on [Netlify](https://www.netlify.com).
-2. Set Build Command: `npm run build`
-3. Set Publish Directory: `.next` (or `out` if using `output: 'export'`).
-
----
 
 ## 📱 Mobile Responsiveness & Performance
 
